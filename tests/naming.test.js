@@ -90,14 +90,19 @@ test('R2: rng가 항상 0이어도 무한 반복 없이 2개', () => {
 });
 
 // ── buildUserMessage ──
-test('B1: 제외 목록이 없으면 "없음"', () => {
+test('B1: 제외 목록이 없으면 "없음", 성별 any는 "상관없음"', () => {
   assert.equal(
-    buildUserMessage('안', [], ['밝은', '차분한']),
-    '성: 안\n제외할 이름: 없음\n이번 분위기 키워드: 밝은, 차분한',
+    buildUserMessage('안', 'any', [], ['밝은', '차분한']),
+    '성: 안\n성별: 상관없음\n제외할 이름: 없음\n이번 분위기 키워드: 밝은, 차분한',
   );
 });
 
 test('B2: 제외 목록은 쉼표로 연결', () => {
-  const lines = buildUserMessage('안', ['희영', '세영'], ['맑은', '우아한']).split('\n');
-  assert.equal(lines[1], '제외할 이름: 희영, 세영');
+  const lines = buildUserMessage('안', 'any', ['희영', '세영'], ['맑은', '우아한']).split('\n');
+  assert.equal(lines[2], '제외할 이름: 희영, 세영');
+});
+
+test('B3: male은 "남자", female은 "여자"', () => {
+  assert.equal(buildUserMessage('안', 'male', [], ['밝은', '맑은']).split('\n')[1], '성별: 남자');
+  assert.equal(buildUserMessage('안', 'female', [], ['밝은', '맑은']).split('\n')[1], '성별: 여자');
 });

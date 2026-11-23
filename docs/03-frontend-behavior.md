@@ -25,6 +25,7 @@ loading ──(오류)──▶ error     (이전 결과는 유지)
 error ──(입력 수정)──▶ 오류 안내만 숨김 (결과가 있으면 success, 없으면 idle)
 ```
 
+- `loading` 상태에서는 성별 라디오도 `disabled`입니다.
 - 상태는 `app.js`의 변수 하나(`let state = 'idle'`)로 관리하고, 화면 갱신은 `render()` 함수 하나에서만 합니다.
 
 ### 1.1 함께 관리하는 값
@@ -32,10 +33,11 @@ error ──(입력 수정)──▶ 오류 안내만 숨김 (결과가 있으�
 | 변수 | 타입 | 의미 |
 |---|---|---|
 | `currentSurname` | string | 마지막으로 이름을 지은 성 |
+| `currentGender` | string | 마지막으로 이름을 지은 성별 (`any`/`male`/`female`) |
 | `shownNames` | string[] | 이 성으로 지금까지 화면에 나온 **이름 부분**(성 제외, 예: `희영`). 최대 30개, 넘으면 오래된 것부터 버림 |
 | `names` | object[] | 지금 화면에 보이는 5개 |
 
-- 입력한 성이 `currentSurname`과 **다르면** 요청 전에 `shownNames`를 빈 배열로 초기화합니다.
+- 입력한 성이 `currentSurname`과 다르거나, 선택한 성별이 `currentGender`와 **다르면** 요청 전에 `shownNames`를 빈 배열로 초기화합니다.
 
 ---
 
@@ -45,6 +47,7 @@ error ──(입력 수정)──▶ 오류 안내만 숨김 (결과가 있으�
 |---|---|---|
 | `surname-input` | `<input>` | 성 입력 |
 | `surname-hint` | `<p>` | 입력 안내 / 잘못된 입력 안내 |
+| `gender-group` | `<fieldset>` | 성별 선택 (`name="gender"` 라디오 3개: `any`, `male`, `female`) |
 | `generate-btn` | `<button>` | 이름 지어 주세요 |
 | `error-box` | `<div role="alert">` | 오류 안내 상자 |
 | `error-message` | `<p>` (error-box 안) | 오류 문장 |
@@ -85,12 +88,12 @@ error ──(입력 수정)──▶ 오류 안내만 숨김 (결과가 있으�
 `generate()` 함수 하나로 두 버튼을 모두 처리합니다.
 
 - **주 버튼 클릭** 또는 입력창에서 `Enter`(조합 중이 아닐 때) → `generate()`
-- **다른 이름 보기 클릭** → `generate()` (성은 `currentSurname` 사용)
+- **다른 이름 보기 클릭** → `generate()` (성은 `currentSurname`, 성별은 **지금 선택된 값** 사용)
 
 순서:
 1. `state === 'loading'`이면 아무것도 하지 않음 (중복 방지).
 2. 성 검사. 실패하면 서버에 보내지 않고 `INVALID_SURNAME` 오류 표시.
-3. 성이 `currentSurname`과 다르면 `shownNames = []`, `currentSurname = 새 성`.
+3. 성 또는 성별이 이전과 다르면 `shownNames = []`, `currentSurname`·`currentGender` 갱신.
 4. 상태 `loading`.
 5. 요청:
    ```js
@@ -100,7 +103,7 @@ error ──(입력 수정)──▶ 오류 안내만 숨김 (결과가 있으�
    const res = await fetch('/api/generate', {
      method: 'POST',
      headers: { 'Content-Type': 'application/json' },
-     body: JSON.stringify({ surname, exclude: shownNames }),
+     body: JSON.stringify({ surname, gender, exclude: shownNames }),
      signal: controller.signal,
    });
    ```
@@ -149,7 +152,8 @@ error ──(입력 수정)──▶ 오류 안내만 숨김 (결과가 있으�
 - [ ] 로딩 중 버튼을 연타해도 요청은 1번만 간다.
 - [ ] 잘못된 성(`ahn`, `안1`, `안태수`)은 서버에 요청하지 않는다.
 - [ ] "다른 이름 보기"를 3번 눌러도 화면에 나온 이름이 겹치지 않는다.
-- [ ] 성을 바꾸면 제외 목록이 초기화된다 (Network 탭에서 `exclude: []` 확인).
+- [ ] 성 또는 성별을 바꾸면 제외 목록이 초기화된다 (Network 탭에서 `exclude: []` 확인).
+- [ ] 요청 Payload에 `gender`가 `any`/`male`/`female` 중 하나로 들어간다.
 - [ ] 오류가 나도 이전 이름 카드와 입력한 성이 남아 있다.
 - [ ] `public/app.js`에 `innerHTML`이 없다.
 

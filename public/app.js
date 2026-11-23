@@ -39,10 +39,12 @@ const el = {
   results: document.getElementById('results'),
   nameList: document.getElementById('name-list'),
   regenerateBtn: document.getElementById('regenerate-btn'),
+  genderInputs: document.querySelectorAll('input[name="gender"]'),
 };
 
 let state = 'idle'; // idle | loading | success | error
 let currentSurname = '';
+let currentGender = 'any';
 let shownNames = [];
 let names = [];
 let errorCode = '';
@@ -69,6 +71,7 @@ function render({ composing = false } = {}) {
   const showInvalid = inputStatus === 'invalid' && !composing;
 
   el.input.readOnly = isLoading;
+  el.genderInputs.forEach((radio) => { radio.disabled = isLoading; });
   el.hint.textContent = showInvalid ? TEXT.hintInvalid : TEXT.hintDefault;
   el.hint.classList.toggle('is-invalid', showInvalid);
 
@@ -117,14 +120,18 @@ function showError(code) {
   render();
 }
 
-async function requestNames(surname, exclude) {
+function selectedGender() {
+  return document.querySelector('input[name="gender"]:checked')?.value ?? 'any';
+}
+
+async function requestNames(surname, gender, exclude) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), CLIENT_TIMEOUT_MS);
   try {
     const res = await fetch('/api/generate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ surname, exclude }),
+      body: JSON.stringify({ surname, gender, exclude }),
       signal: controller.signal,
     });
     let body;
@@ -148,19 +155,21 @@ async function requestNames(surname, exclude) {
 async function generate(button) {
   if (state === 'loading') return;
 
-  // 다른 이름 보기는 마지막으로 지은 성을 그대로 사용
-  const surname = button === el.regenerateBtn && currentSurname
-    ? currentSurname
-    : el.input.value.trim();
+  // 다른 이름 보기는 마지막으로 지은 성을 쓰고, 성별은 지금 선택된 값을 씀
+  const isRegenerate = button === el.regenerateBtn && currentSurname;
+  const surname = isRegenerate ? currentSurname : el.input.value.trim();
+  const gender = selectedGender();
 
   if (!HANGUL_1_2.test(surname)) {
     showError(surname.length === 0 ? 'EMPTY_SURNAME' : 'INVALID_SURNAME');
     return;
   }
 
-  if (surname !== currentSurname) {
+  // 성이나 성별이 바뀌면 이전 이름 목록은 의미가 없으므로 비움
+  if (surname !== currentSurname || gender !== currentGender) {
     shownNames = [];
     currentSurname = surname;
+    currentGender = gender;
   }
 
   const isFirstResult = names.length === 0;
@@ -168,7 +177,7 @@ async function generate(button) {
   state = 'loading';
   render();
 
-  const result = await requestNames(surname, shownNames);
+  const result = await requestNames(surname, gender, shownNames);
   loadingButton = null;
 
   if (result.error) {

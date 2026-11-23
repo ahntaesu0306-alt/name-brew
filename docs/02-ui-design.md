@@ -170,9 +170,33 @@
 | 입력창 | `<input id="surname-input" type="text" maxlength="4" autocomplete="off" placeholder="예) 안">` |
 | 입력창 스타일 | 흰 배경, `1px solid var(--color-border)`, `--radius-input`, 높이 48px, 안쪽 여백 `0 16px`, 글자 20px·600, 가운데 정렬, 너비 120px |
 | 포커스 | `outline: 2px solid var(--color-green-accent)` |
-| 배치 | 입력창과 버튼을 한 줄에 `display:flex; gap: var(--space-3); align-items:center;` |
+| 배치 | 위에서부터 입력창 → 안내 문구 → 성별 선택(6.2.1) → 주 버튼 줄(`.action-row`, 오른쪽 정렬, 위 여백 `--space-4`) |
 | 안내 문구 | 입력 줄 아래 `<p id="surname-hint">` 14px 보조색: `한글 성 1~2글자를 입력해 주세요 (예: 안, 남궁)` |
 | 안내 문구 (잘못된 입력) | 같은 요소에 `.is-invalid` → 색 `--color-red`, 문구 `한글로 된 성 1~2글자만 입력할 수 있어요.` |
+
+### 6.2.1 성별 선택
+
+```html
+<fieldset id="gender-group" class="gender-group">
+  <legend class="gender-legend">성별</legend>
+  <div class="gender-options">
+    <label class="gender-option"><input type="radio" name="gender" value="any" checked><span>상관없음</span></label>
+    <label class="gender-option"><input type="radio" name="gender" value="male"><span>남자</span></label>
+    <label class="gender-option"><input type="radio" name="gender" value="female"><span>여자</span></label>
+  </div>
+</fieldset>
+```
+
+| 항목 | 규칙 |
+|---|---|
+| fieldset | 테두리·여백 없음, 위 여백 `--space-4` |
+| legend | `성별`, 14px, 600, `--color-text-soft` |
+| 라디오 | 진짜 라디오(`<input type="radio">`)를 투명하게 숨기고 옆 `<span>`을 알약 버튼처럼 꾸밈 (키보드 화살표·화면낭독기 그대로 동작) |
+| 기본 알약 | 높이 40px 이상, 안쪽 여백 `8px 20px`, `1px solid var(--color-border)`, `--radius-pill`, 15px 600, 글자 `--color-text-soft`, 흰 배경 |
+| 선택된 알약 | 배경·테두리 `--color-green-accent`, 글자 `#ffffff` |
+| 포커스 | `outline: 2px solid var(--color-green-house)` |
+| 누를 때 | `scale(0.95)` |
+| 모바일 | 3개가 가로로 똑같은 너비(`flex: 1`) |
 
 > `maxlength`를 4로 두는 이유: 3글자 이상을 입력했을 때 잘리지 않고 "잘못된 입력" 안내를 보여주기 위함입니다.
 
@@ -247,7 +271,7 @@
 
 | 구간 | 너비 | 변경 사항 |
 |---|---|---|
-| 모바일 | 480px 미만 | 입력 줄 세로 배치, 입력창·버튼 100% 너비, 카드 안쪽 여백 `--space-3`, 히어로 제목 24px, 이름 카드 1열 |
+| 모바일 | 480px 미만 | 입력창·버튼 100% 너비, 성별 알약 3개 같은 너비, 카드 안쪽 여백 `--space-3`, 히어로 제목 24px, 이름 카드 1열 |
 | 태블릿 | 480 ~ 1023px | 이름 카드 2열 |
 | PC | 1024px 이상 | 이름 카드 3열, 본문 좌우 여백 `--space-6`, 히어로 제목 32px |
 

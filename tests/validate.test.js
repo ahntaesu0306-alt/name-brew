@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateSurname, normalizeExclude } from '../lib/validate.js';
+import { validateSurname, normalizeExclude, normalizeGender } from '../lib/validate.js';
 
 // ── validateSurname ──
 test('V1: 한 글자 성', () => {
@@ -72,4 +72,20 @@ test('E5: 35개면 마지막 30개만', () => {
   const result = normalizeExclude(input);
   assert.equal(result.length, 30);
   assert.deepEqual(result, input.slice(-30));
+});
+
+// ── normalizeGender ──
+test('G1: 없으면 any', () => {
+  assert.equal(normalizeGender(undefined), 'any');
+});
+
+test('G2: male / female / any 는 그대로', () => {
+  assert.equal(normalizeGender('male'), 'male');
+  assert.equal(normalizeGender('female'), 'female');
+  assert.equal(normalizeGender('any'), 'any');
+});
+
+test('G3: 정해지지 않은 값은 INVALID_REQUEST', () => {
+  assert.throws(() => normalizeGender('남자'), { code: 'INVALID_REQUEST' });
+  assert.throws(() => normalizeGender(1), { code: 'INVALID_REQUEST' });
 });

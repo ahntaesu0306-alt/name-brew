@@ -224,6 +224,79 @@ p {
   color: var(--color-red);
 }
 
+.action-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-4);
+}
+
+/* ── 성별 선택 (알약 모양 라디오) ── */
+.gender-group {
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.gender-legend {
+  padding: 0;
+  margin-bottom: var(--space-2);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-soft);
+}
+
+.gender-options {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.gender-option {
+  position: relative;
+}
+
+/* 실제 라디오는 숨기고 글자 부분을 알약 버튼처럼 보이게 함 (키보드·화면낭독기는 그대로 동작) */
+.gender-option input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.gender-option span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-soft);
+  background: var(--color-white);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.gender-option span:active {
+  transform: var(--press-scale);
+}
+
+.gender-option input:checked + span {
+  background: var(--color-green-accent);
+  border-color: var(--color-green-accent);
+  color: #ffffff;
+}
+
+.gender-option input:focus-visible + span {
+  outline: 2px solid var(--color-green-house);
+  outline-offset: 2px;
+}
+
+.gender-option input:disabled + span {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 /* ── 버튼 ── */
 .btn {
   display: inline-flex;
@@ -391,6 +464,16 @@ p {
   .name-list {
     grid-template-columns: 1fr;
   }
+
+  .gender-option {
+    flex: 1;
+  }
+
+  .gender-option span {
+    width: 100%;
+    justify-content: center;
+    padding: 8px 0;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -417,7 +500,8 @@ p {
   }
 
   .btn,
-  .name-card {
+  .name-card,
+  .gender-option span {
     transition: none;
   }
 }

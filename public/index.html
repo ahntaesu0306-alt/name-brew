@@ -29,11 +29,32 @@
       <div class="input-row">
         <label for="surname-input" class="sr-only">성 입력</label>
         <input id="surname-input" type="text" maxlength="4" autocomplete="off" placeholder="예) 안" aria-describedby="surname-hint">
+      </div>
+      <p id="surname-hint" class="hint">한글 성 1~2글자를 입력해 주세요 (예: 안, 남궁)</p>
+
+      <fieldset id="gender-group" class="gender-group">
+        <legend class="gender-legend">성별</legend>
+        <div class="gender-options">
+          <label class="gender-option">
+            <input type="radio" name="gender" value="any" checked>
+            <span>상관없음</span>
+          </label>
+          <label class="gender-option">
+            <input type="radio" name="gender" value="male">
+            <span>남자</span>
+          </label>
+          <label class="gender-option">
+            <input type="radio" name="gender" value="female">
+            <span>여자</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <div class="action-row">
         <button id="generate-btn" type="button" class="btn btn-primary" disabled>
           <span class="spinner" aria-hidden="true"></span><span class="btn-label">이름 지어 주세요</span>
         </button>
       </div>
-      <p id="surname-hint" class="hint">한글 성 1~2글자를 입력해 주세요 (예: 안, 남궁)</p>
     </section>
 
     <div id="error-box" class="alert" role="alert" hidden>

@@ -1,5 +1,5 @@
 import { AppError, ERRORS } from '../lib/errors.js';
-import { validateSurname, normalizeExclude } from '../lib/validate.js';
+import { validateSurname, normalizeExclude, normalizeGender } from '../lib/validate.js';
 import { createClient, generateNames } from '../lib/naming.js';
 
 const DEFAULT_MODEL = 'gpt-5.4-mini';
@@ -48,6 +48,7 @@ export default async function handler(req, res) {
     }
     const body = readBody(req);
     const surname = validateSurname(body.surname);
+    const gender = normalizeGender(body.gender);
     const exclude = normalizeExclude(body.exclude);
 
     const apiKey = process.env.OPENAI_API_KEY;
@@ -55,9 +56,9 @@ export default async function handler(req, res) {
 
     const client = await createClient(apiKey);
     const model = process.env.OPENAI_MODEL || DEFAULT_MODEL;
-    const names = await generateNames(surname, exclude, { client, model });
+    const names = await generateNames(surname, gender, exclude, { client, model });
 
-    send(res, 200, { ok: true, data: { surname, names } });
+    send(res, 200, { ok: true, data: { surname, gender, names } });
   } catch (err) {
     const appError = toAppError(err);
     // 사용자 입력·결과는 남기지 않고 코드와 상태 번호만 기록
