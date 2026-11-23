@@ -1,0 +1,423 @@
+:root {
+  /* ── 초록 4단계 + 연한 초록 ── */
+  --color-green-brand: #006241;   /* 큰 제목(h1), 로고 글자 */
+  --color-green-accent: #00754A;  /* 주 버튼 배경, 포커스 테두리, 이름 카드 윗줄 */
+  --color-green-house: #1E3932;   /* 상단 히어로 띠, 하단 바 배경 */
+  --color-green-uplift: #2b5148;  /* 장식용 (이번 범위에서는 거의 사용 안 함) */
+  --color-green-light: #d4e9e2;   /* 이름 카드에 마우스를 올렸을 때 배경 */
+
+  /* ── 바탕 ── */
+  --color-canvas: #f2f0eb;        /* 페이지 배경 (크림) */
+  --color-ceramic: #edebe9;       /* 구분 영역 */
+  --color-white: #ffffff;         /* 카드 배경 */
+
+  /* ── 글자 ── */
+  --color-text: rgba(0, 0, 0, 0.87);       /* 기본 글자 (순수 검정 금지) */
+  --color-text-soft: rgba(0, 0, 0, 0.58);  /* 보조 글자 */
+  --color-text-on-dark: #ffffff;           /* 진한 초록 위 글자 */
+  --color-text-on-dark-soft: rgba(255, 255, 255, 0.70);
+
+  /* ── 상태 ── */
+  --color-red: #c82014;                    /* 오류, 잘못된 입력 안내 */
+  --color-red-tint: rgba(200, 32, 20, 0.06); /* 오류 배경 */
+  --color-border: #d6dbde;                 /* 입력창 테두리 */
+
+  /* ── 글꼴 ── */
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Malgun Gothic', 'Helvetica Neue', Arial, sans-serif;
+  --tracking: -0.01em;
+
+  /* ── 여백 (4px 단위) ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;   /* 기본 여백 */
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 40px;
+  --space-7: 48px;
+  --space-9: 64px;
+
+  /* ── 모서리 ── */
+  --radius-card: 12px;
+  --radius-pill: 50px;
+  --radius-input: 4px;
+
+  /* ── 그림자 (얇게 여러 겹) ── */
+  --shadow-card: 0 0 0.5px rgba(0, 0, 0, 0.14), 0 1px 1px rgba(0, 0, 0, 0.24);
+  --shadow-nav: 0 1px 3px rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.06), 0 0 2px rgba(0, 0, 0, 0.07);
+
+  /* ── 움직임 ── */
+  --transition-fast: all 0.2s ease;
+  --press-scale: scale(0.95);
+
+  /* ── 최대 너비 ── */
+  --content-max: 720px;
+}
+
+/* ── 기본 ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: var(--tracking);
+  color: var(--color-text);
+  background: var(--color-canvas);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── 상단 바 ── */
+.topbar {
+  background: var(--color-white);
+  box-shadow: var(--shadow-nav);
+  position: relative;
+  z-index: 1;
+}
+
+.topbar-inner {
+  max-width: var(--content-max);
+  height: 64px;
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-green-brand);
+}
+
+/* ── 히어로 ── */
+.hero {
+  background: var(--color-green-house);
+  padding: var(--space-9) 0 calc(var(--space-9) + var(--space-5));
+}
+
+/* 히어로 글자가 아래 카드와 같은 세로선에 맞도록 본문과 같은 너비·여백 사용 */
+.hero-inner {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+}
+
+.hero-title {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text-on-dark);
+}
+
+.hero-sub {
+  margin-top: var(--space-3);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-text-on-dark-soft);
+}
+
+/* ── 본문 ── */
+.container {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 0 var(--space-3) var(--space-9);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* ── 카드 ── */
+.card {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--space-4);
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-green-brand);
+}
+
+/* ── 입력 카드 ── */
+.input-card {
+  margin-top: calc(var(--space-5) * -1);
+}
+
+.input-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+#surname-input {
+  width: 120px;
+  height: 48px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-input);
+  background: var(--color-white);
+  font: 600 20px/1 var(--font-sans);
+  letter-spacing: var(--tracking);
+  color: var(--color-text);
+  text-align: center;
+}
+
+#surname-input::placeholder {
+  color: var(--color-text-soft);
+  font-weight: 400;
+}
+
+#surname-input:focus {
+  outline: 2px solid var(--color-green-accent);
+  outline-offset: -1px;
+}
+
+#surname-input[readonly] {
+  background: var(--color-ceramic);
+}
+
+.hint {
+  margin-top: var(--space-2);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-soft);
+}
+
+.hint.is-invalid {
+  color: var(--color-red);
+}
+
+/* ── 버튼 ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 48px;
+  padding: 12px 28px;
+  border-radius: var(--radius-pill);
+  font: 600 16px/1.2 var(--font-sans);
+  letter-spacing: var(--tracking);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn:active {
+  transform: var(--press-scale);
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--color-green-house);
+  outline-offset: 2px;
+}
+
+.btn-primary {
+  background: var(--color-green-accent);
+  color: #ffffff;
+  border: 1px solid var(--color-green-accent);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-green-accent);
+  border: 1px solid var(--color-green-accent);
+}
+
+/* 로딩 스피너 — 버튼에 .is-loading 이 붙을 때만 보임 */
+.spinner {
+  display: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.btn.is-loading .spinner {
+  display: inline-block;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── 오류 안내 ── */
+.alert {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  padding: var(--space-3);
+  background: var(--color-red-tint);
+  border-left: 4px solid var(--color-red);
+  border-radius: var(--radius-card);
+}
+
+/* ── 결과 ── */
+.name-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+.name-card {
+  background: var(--color-white);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  border-top: 4px solid var(--color-green-accent);
+  padding: var(--space-4) var(--space-3);
+  text-align: center;
+  transition: var(--transition-fast);
+  animation: rise 0.3s ease both;
+}
+
+.name-card:hover {
+  background: var(--color-green-light);
+}
+
+.name-full {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.05em;
+  color: var(--color-green-brand);
+}
+
+.name-vibe {
+  margin-top: var(--space-1);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--color-text-soft);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.results-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-4);
+}
+
+/* ── 하단 바 ── */
+.footer {
+  background: var(--color-green-house);
+  padding: var(--space-5) var(--space-3);
+  text-align: center;
+  font-size: 14px;
+  color: var(--color-text-on-dark-soft);
+}
+
+/* ── 반응형 ── */
+@media (max-width: 479px) {
+  .hero-title {
+    font-size: 24px;
+  }
+
+  .hero-sub {
+    font-size: 15px;
+  }
+
+  .card {
+    padding: var(--space-3);
+  }
+
+  .input-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #surname-input,
+  .btn {
+    width: 100%;
+  }
+
+  .name-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: 32px;
+  }
+
+  .container,
+  .topbar-inner,
+  .hero-inner {
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+  }
+
+  .name-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner,
+  .name-card {
+    animation: none;
+  }
+
+  .btn,
+  .name-card {
+    transition: none;
+  }
+}

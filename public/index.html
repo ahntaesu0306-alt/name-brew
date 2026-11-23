@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="성을 입력하면 AI가 어울리는 이름 5개를 지어 드려요.">
+  <title>네임 브루 · AI 이름 짓기</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <p class="logo"><span aria-hidden="true">☕</span> 네임 브루</p>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1 class="hero-title">성만 알려 주세요, 이름은 제가 내릴게요</h1>
+      <p class="hero-sub">성을 입력하면 AI가 어울리는 이름 5개를 지어 드려요.</p>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="card input-card">
+      <h2 class="card-title">성을 입력해 주세요</h2>
+      <div class="input-row">
+        <label for="surname-input" class="sr-only">성 입력</label>
+        <input id="surname-input" type="text" maxlength="4" autocomplete="off" placeholder="예) 안" aria-describedby="surname-hint">
+        <button id="generate-btn" type="button" class="btn btn-primary" disabled>
+          <span class="spinner" aria-hidden="true"></span><span class="btn-label">이름 지어 주세요</span>
+        </button>
+      </div>
+      <p id="surname-hint" class="hint">한글 성 1~2글자를 입력해 주세요 (예: 안, 남궁)</p>
+    </section>
+
+    <div id="error-box" class="alert" role="alert" hidden>
+      <span class="alert-icon" aria-hidden="true">⚠️</span>
+      <p id="error-message"></p>
+    </div>
+
+    <section id="results" class="results" aria-live="polite" hidden>
+      <h2 class="sr-only">지어 준 이름</h2>
+      <ul id="name-list" class="name-list"></ul>
+      <div class="results-actions">
+        <button id="regenerate-btn" type="button" class="btn btn-secondary">
+          <span class="spinner" aria-hidden="true"></span><span class="btn-label">다른 이름 보기</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>AI가 지어 준 이름은 재미와 참고용이에요. 실제 작명은 전문가와 상의하세요.</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
